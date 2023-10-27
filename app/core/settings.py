@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
+from django.contrib.messages import constants as messages
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -35,7 +38,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,9 +82,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE = (
+    ('en', _('English')),
+    ('zh-hant', _('Traditional Chinese')),
+)
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'zh-Hant'
+
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
@@ -93,3 +101,19 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:index"
+LOGOUT_REDIRECT_URL = "accounts:login"
+
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }

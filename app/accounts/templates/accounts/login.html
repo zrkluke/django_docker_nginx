@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+<div class="container"
+     style="min-height: 50vh;">
+    <div class="row pt-5">
+    {% include 'include/messages.html' with messages=messages %}
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4 pt-5 mx-auto">
+            <h2 class="fw-bold fs-1 text-center">
+                登入
+            </h2>
+            <form method="post">{% csrf_token %}
+                {% for field in form %}
+                    <div class="my-3">
+                        
+                        <strong><small>
+                            {{ field.label_tag }}
+                        </small></strong>
+                        
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <ul class="errorlist text-danger fw-bold list-unstyled">
+                                {% for error in field.errors %}
+                                    <li>{{ error|escape }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if field.help_text %}
+                            <p class="small text-secondary text-justify-align">
+                                {{ field.help_text|safe }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid my-3 col-12 mx-auto">
+                    <button type="submit" class="btn btn-dark">登入</button>
+                </div>
+            </form>
+
+
+            <p class="small text-end my-3">
+                還不是會員？
+                <a href="{% url 'accounts:register' %}"
+                   class="text-dark text-decoration-underline">
+                   免費註冊</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
